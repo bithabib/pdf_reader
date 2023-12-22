@@ -44,8 +44,8 @@
 
 import pdfquery
 
-def extract_value(pdf, field, target_text):
-    field_element = pdf.pq(f'LTTextLineHorizontal:contains("{field}") + LTTextLineHorizontal').eq(0)
+def extract_value(pdf, field, target_text, eq_value):
+    field_element = pdf.pq(f'LTTextLineHorizontal:contains("{field}") + LTTextLineHorizontal').eq(eq_value)
     print(field_element.text())
     if field_element:
         target_element = pdf.pq(f'LTTextLineHorizontal:contains("{target_text}")')
@@ -77,35 +77,62 @@ pdf = pdfquery.PDFQuery('request.pdf')
 pdf.load()
 
 target_text = "Parent/Legal"
-
-name = extract_value(pdf, "NAME", target_text)
-date_of_birth = extract_value(pdf, "DATE OF BIRTH", target_text)
-pmi_number = extract_value(pdf, "PMI NUMBER", target_text)
-insurance_number = extract_value(pdf, "INSURANCE NUMBER", target_text)
-address = extract_value(pdf, "ADDRESS", target_text)
-city = extract_value(pdf, "CITY", target_text)
-state = extract_value(pdf, "STATE", target_text)
-zip_code = extract_value(pdf, "ZIP CODE", target_text)
-email = extract_value(pdf, "EMAIL ADDRESS", target_text)
-preferred_phone = extract_value(pdf, "PREFERRED PHONE", target_text)
-country_of_residence = extract_value(pdf, "COUNTY OF RESIDENCE", target_text)
-cfr = extract_value(pdf, "(CFR)", target_text)
-waiver_type = extract_value(pdf, "(WAIVER TYPE)", target_text)
+trace = 0
+person_receiving_service_name = extract_value(pdf, "NAME", target_text, trace)
+person_receiving_service_date_of_birth = extract_value(pdf, "DATE OF BIRTH", target_text, trace)
+person_receiving_service_pmi_number = extract_value(pdf, "PMI NUMBER", target_text, trace)
+person_receiving_service_insurance_number = extract_value(pdf, "applicable)", target_text, trace)
+person_receiving_service_address = extract_value(pdf, "ADDRESS", target_text, trace)
+person_receiving_service_city = extract_value(pdf, "CITY", target_text, trace)
+person_receiving_service_state = extract_value(pdf, "STATE", target_text, trace)
+person_receiving_service_zip_code = extract_value(pdf, "ZIP CODE", target_text, trace)
+person_receiving_service_email = extract_value(pdf, "EMAIL ADDRESS", target_text, trace)
+person_receiving_service_preferred_phone = extract_value(pdf, "NUMBER", target_text, trace+2)
+person_receiving_service_country_of_residence = extract_value(pdf, "COUNTY OF RESIDENCE", target_text, trace)
+person_receiving_service_cfr = extract_value(pdf, "(CFR)", target_text, trace)
+person_receiving_service_waiver_type = extract_value(pdf, "(WAIVER TYPE)", target_text, trace)
 
 person_receiving_services = {
-    "name": name,
-    "date_of_birth": date_of_birth,
-    "pmi_number": pmi_number,
-    "insurance_number": insurance_number,
-    "address": address,
-    "city": city,
-    "state": state,
-    "zip": zip_code,
-    "email": email,
-    "preferred_phone": preferred_phone,
-    "country_of_residence": country_of_residence,
-    "cfr": cfr,
-    "waiver_type": waiver_type
+    "name": person_receiving_service_name,
+    "date_of_birth": person_receiving_service_date_of_birth,
+    "pmi_number": person_receiving_service_pmi_number,
+    "insurance_number": person_receiving_service_insurance_number,
+    "address": person_receiving_service_address,
+    "city": person_receiving_service_city,
+    "state": person_receiving_service_state,
+    "zip": person_receiving_service_zip_code,
+    "email": person_receiving_service_email,
+    "preferred_phone": person_receiving_service_preferred_phone,
+    "country_of_residence": person_receiving_service_country_of_residence,
+    "cfr": person_receiving_service_cfr,
+    "waiver_type": person_receiving_service_waiver_type
 }
 
 print(person_receiving_services)
+
+target_text = "Lead Agency/County"
+legal_representative_list = []
+while True:
+    trace += 1
+    legal_representative_name = extract_value(pdf, "NAME", target_text, trace)
+    if not legal_representative_name:
+        break
+    legal_representative_email = extract_value(pdf, "EMAIL ADDRESS", target_text, trace)
+    legal_representative_home_phone = extract_value(pdf, "HOME PHONE NUMBER", target_text, trace-1)
+    legal_representative_cell_phone = extract_value(pdf, "CELL PHONE NUMBER", target_text, trace-1)
+    legal_representative_address = extract_value(pdf, "ADDRESS", target_text, trace+2)
+    legal_representative_city = extract_value(pdf, "CITY", target_text, trace)
+    legal_representative_state = extract_value(pdf, "STATE", target_text, trace)
+    legal_representative_zip = extract_value(pdf, "ZIP CODE", target_text, trace)
+    legal_representative_list.append({
+        'legal_representative_name': legal_representative_name,
+        'legal_representative_email' : legal_representative_email,
+        'legal_representative_home_phone': legal_representative_home_phone,
+        'legal_representative_cell_phone': legal_representative_cell_phone,
+        'legal_representative_address': legal_representative_address,
+        'legal_representative_city': legal_representative_city,
+        'legal_representative_state': legal_representative_state,
+        'legal_representative_zip': legal_representative_zip
+        })
+
+print(legal_representative_list)
