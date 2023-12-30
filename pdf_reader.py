@@ -29,7 +29,7 @@ def extract_value(pdf, field, target_text, eq_value):
         return None
 
 pdf = pdfquery.PDFQuery('request.pdf')
-pdf.load()
+pdf.load(0)
 
 target_text = "Parent/Legal"
 trace = 0
@@ -140,4 +140,33 @@ fiscal_support = {
     'fiscal_support_fax': fiscal_support_fax
 }
 print(fiscal_support)
+
+
+pdf.load(1)
+trace = 0
+target_text = "Employment Model"
+support_planner_name = extract_value(pdf, "NAME", target_text, trace)
+support_planner_address = extract_value(pdf, "ADDRESS", target_text, trace)
+support_planner_city = extract_value(pdf, "ITY", target_text, trace)
+support_planner_state = extract_value(pdf, "STATE", target_text, trace)
+support_planner_zip = extract_value(pdf, "ZIP CODE", target_text, trace)
+support_planner_contact_name = extract_value(pdf, "NAME", target_text, trace+1)
+support_planner_email = extract_value(pdf, "EMAIL ADDRESS", target_text, trace)
+support_planner_phone = extract_value(pdf, "NUMBER", target_text, trace)
+support_planner_fax = extract_value(pdf, "NUMBER", target_text, trace+1)
+
+support_planner = {
+    'support_planner_name': support_planner_name,
+    'support_planner_address': support_planner_address,
+    'support_planner_city': support_planner_city,
+    'support_planner_state': support_planner_state,
+    'support_planner_zip': support_planner_zip,
+    'support_planner_contact_name': support_planner_contact_name,
+    'support_planner_email': support_planner_email,
+    'support_planner_phone': support_planner_phone,
+    'support_planner_fax': support_planner_fax
+}
+print(support_planner)
+print(support_planner_name)
+
 
