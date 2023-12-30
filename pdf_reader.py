@@ -1,49 +1,4 @@
-# import pdfquery
-
-# pdf = pdfquery.PDFQuery('request.pdf')
-
-# pdf.load()
-
-
-# name = pdf.pq('LTTextLineHorizontal:contains("NAME") + LTTextLineHorizontal').eq(0).text()
-# date_of_birth = pdf.pq('LTTextLineHorizontal:contains("DATE OF BIRTH") + LTTextLineHorizontal').eq(0).text()
-# pmi_number = pdf.pq('LTTextLineHorizontal:contains("PMI NUMBER") + LTTextLineHorizontal').eq(0).text()
-# insurance_number = pdf.pq('LTTextLineHorizontal:contains("INSURANCE NUMBER") + LTTextLineHorizontal + LTTextLineHorizontal').eq(0).text()
-# address = pdf.pq('LTTextLineHorizontal:contains("ADDRESS") + LTTextLineHorizontal').eq(0).text()
-# city = pdf.pq('LTTextLineHorizontal:contains("CITY") + LTTextLineHorizontal').eq(0).text()
-# state = pdf.pq('LTTextLineHorizontal:contains("STATE") + LTTextLineHorizontal').eq(0).text()
-# zip = pdf.pq('LTTextLineHorizontal:contains("ZIP CODE") + LTTextLineHorizontal').eq(0).text()
-# email = pdf.pq('LTTextLineHorizontal:contains("EMAIL ADDRESS") + LTTextLineHorizontal').eq(0).text()
-# prefered_phone = pdf.pq('LTTextLineHorizontal:contains("PREFERRED PHONE") + LTTextLineHorizontal + LTTextLineHorizontal').eq(0).text()
-# country_of_residence = pdf.pq('LTTextLineHorizontal:contains("COUNTY OF RESIDENCE") + LTTextLineHorizontal').eq(0).text()
-# cfr = pdf.pq('LTTextLineHorizontal:contains("(CFR)") + LTTextLineHorizontal').eq(0).text()
-# waiver_type = pdf.pq('LTTextLineHorizontal:contains("(WAIVER TYPE)") + LTTextLineHorizontal').eq(0).text()
-
-
-
-
-# person_receiving_services = {
-#     "name": name,
-#     "date_of_birth": date_of_birth,
-#     "pmi_number": pmi_number,
-#     "insurance_number": insurance_number,
-#     "address": address,
-#     "city": city,
-#     "state": state,
-#     "zip": zip,
-#     "email": email,
-#     "prefered_phone": prefered_phone,
-#     "country_of_residance": country_of_residence,
-#     "cfr": cfr,
-#     "waiver_type": waiver_type
-# }
-
-# print(person_receiving_services)
-
-
-
 import pdfquery
-
 def extract_value(pdf, field, target_text, eq_value):
     field_element = pdf.pq(f'LTTextLineHorizontal:contains("{field}") + LTTextLineHorizontal').eq(eq_value)
     print(field_element.text())
@@ -108,7 +63,7 @@ person_receiving_services = {
     "waiver_type": person_receiving_service_waiver_type
 }
 
-print(person_receiving_services)
+# print(person_receiving_services)
 
 target_text = "Lead Agency/County"
 legal_representative_list = []
@@ -135,4 +90,29 @@ while True:
         'legal_representative_zip': legal_representative_zip
         })
 
-print(legal_representative_list)
+# print(legal_representative_list)
+
+target_text = "Fiscal Support Entity"
+
+lead_agency_name = extract_value(pdf, "NAME", target_text, trace)
+lead_agency_address = extract_value(pdf, "ADDRESS", target_text, trace+2)
+lead_agency_city = extract_value(pdf, "ITY", target_text, trace)
+lead_agency_state = extract_value(pdf, "STATE", target_text, trace)
+lead_agency_zip = extract_value(pdf, "ZIP CODE", target_text, trace)
+lead_agency_contact_name = extract_value(pdf, "NAME", target_text, trace+1)
+lead_agency_email = extract_value(pdf, "EMAIL ADDRESS", target_text, trace)
+lead_agency_phone = extract_value(pdf, "NUMBER", target_text, trace+2)
+lead_agency_fax = extract_value(pdf, "NUMBER", target_text, trace+3)
+
+lead_agency = {
+    'lead_agency_name': lead_agency_name,
+    'lead_agency_address': lead_agency_address,
+    'lead_agency_city': lead_agency_city,
+    'lead_agency_state': lead_agency_state,
+    'lead_agency_zip': lead_agency_zip,
+    'lead_agency_contact_name': lead_agency_contact_name,
+    'lead_agency_email': lead_agency_email,
+    'lead_agency_phone': lead_agency_phone,
+    'lead_agency_fax': lead_agency_fax
+}
+print(lead_agency)
