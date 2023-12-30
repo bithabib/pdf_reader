@@ -92,7 +92,7 @@ while True:
 
 # print(legal_representative_list)
 
-target_text = "Fiscal Support Entity"
+target_text = "Fiscal"
 
 lead_agency_name = extract_value(pdf, "NAME", target_text, trace)
 lead_agency_address = extract_value(pdf, "ADDRESS", target_text, trace+2)
@@ -116,3 +116,27 @@ lead_agency = {
     'lead_agency_fax': lead_agency_fax
 }
 print(lead_agency)
+trace += 1
+target_text = "Page 1 of"
+fiscal_support_name = extract_value(pdf, "NAME", target_text, trace+1)
+fiscal_support_address = extract_value(pdf, "ADDRESS", target_text, trace+3)
+fiscal_support_city = extract_value(pdf, "ITY", target_text, trace)
+fiscal_support_state = extract_value(pdf, "STATE", target_text, trace)
+fiscal_support_zip = extract_value(pdf, "ZIP CODE", target_text, trace)
+fiscal_support_contact_name = extract_value(pdf, "NAME", target_text, trace+2)
+fiscal_support_email = extract_value(pdf, "EMAIL ADDRESS", target_text, trace)
+fiscal_support_phone = extract_value(pdf, "NUMBER", target_text, trace+3)
+fiscal_support_fax = extract_value(pdf, "NUMBER", target_text, trace+4)
+
+fiscal_support = {
+    'fiscal_support_name': fiscal_support_name,
+    'fiscal_support_address': fiscal_support_address,
+    'fiscal_support_city': fiscal_support_city,
+    'fiscal_support_state': fiscal_support_state,
+    'fiscal_support_zip': fiscal_support_zip,
+    'fiscal_support_contact_name': fiscal_support_contact_name,
+    'fiscal_support_email': fiscal_support_email,
+    'fiscal_support_phone': fiscal_support_phone,
+    'fiscal_support_fax': fiscal_support_fax
+}
+print(fiscal_support)
