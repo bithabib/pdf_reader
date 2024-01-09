@@ -1,8 +1,9 @@
 import pdfquery
 def extract_value(pdf, field, target_text, eq_value):
     field_element = pdf.pq(f'LTTextLineHorizontal:contains("{field}") + LTTextLineHorizontal').eq(eq_value)
-    print(field_element.text())
+    # print(field_element.text())
     if field_element:
+        
         target_element = pdf.pq(f'LTTextLineHorizontal:contains("{target_text}")')
         if target_element:
             # Get bounding boxes of the elements
