@@ -71,28 +71,66 @@ def is_before(pdf, end_text, target_text, target_text_eq_value):
         return False
     
 
-def single_person_information_extract(pdf, fields, start_text, end_text):
+def single_person_information_extract(pdf, fields, start_text, end_text, start_text_page_number, end_text_page_number):
     json_data = {}
-    eq_value = 0
-    for target_text in fields:
-        while True:
-            value = is_between(pdf, start_text, end_text, target_text, eq_value)
-            if value:
-                json_data[target_text] = value
-                break
-            eq_value += 1
-            if eq_value > 10:
-                break
-    return json_data
+    
+    if start_text_page_number == end_text_page_number:
+        for target_text in fields:
+            eq_value = 0
+            while True:
+                value = is_between(pdf, start_text, end_text, target_text, eq_value)
+                if value:
+                    json_data[target_text] = value
+                    break
+                eq_value += 1
+                if eq_value > 10:
+                    break
+        return json_data
+    else:
+        for target_text in fields:
+            while True:
+                value = is_after(pdf, start_text, target_text, eq_value)
+                if value:
+                    json_data[target_text] = value
+                    break
+                eq_value += 1
+                if eq_value > 10:
+                    break
+        eq_value = 0
+        for target_text in fields:
+            while True:
+                value = is_before(pdf, end_text, target_text, eq_value)
+                if value:
+                    json_data[target_text] = value
+                    break
+                eq_value += 1
+                if eq_value > 10:
+                    break
+        return json_data
 
 start_text = 'Person Receiving Services'
 start_text_page_number = find_page_number(pdf, start_text)
 end_text = 'Parent/Legal Representative/Managing Party'
 end_text_page_number = find_page_number(pdf, end_text)
 fields = ['NAME', 'DATE OF BIRTH', 'PMI NUMBER', 'applicable)', 'ADDRESS', 'CITY', 'STATE', 'ZIP CODE', 'EMAIL ADDRESS', 'NUMBER', 'COUNTY OF RESIDENCE', '(CFR)', '(WAIVER TYPE)']
-json_data = single_person_information_extract(pdf, fields, start_text, end_text)
+json_data = single_person_information_extract(pdf, fields, start_text, end_text, start_text_page_number, end_text_page_number)
 print(json_data)
 
+start_text = 'Parent/Legal Representative/Managing Party'
+start_text_page_number = find_page_number(pdf, start_text)
+end_text = "Lead Agency/County"
+end_text_page_number = find_page_number(pdf, end_text)
+fields = ['NAME', 'EMAIL ADDRESS', 'HOME PHONE NUMBER', 'CELL', 'ADDRESS', 'CITY', 'STATE', 'ZIP CODE']
+json_data = single_person_information_extract(pdf, fields, start_text, end_text, start_text_page_number, end_text_page_number)
+print(json_data)
+
+start_text = "Lead Agency/County"
+start_text_page_number = find_page_number(pdf, start_text)
+end_text = "Page 1 of"
+end_text_page_number = find_page_number(pdf, end_text)
+fields = ['NAME', 'ADDRESS', 'CITY', 'STATE', 'ZIP CODE', 'NAME', 'EMAIL ADDRESS', 'NUMBER', 'NUMBER']
+json_data = single_person_information_extract(pdf, fields, start_text, end_text, start_text_page_number, end_text_page_number)
+print(json_data)
 
 
 # def extract_value(pdf, field, target_text, eq_value):
