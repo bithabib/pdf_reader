@@ -126,11 +126,24 @@ print(json_data)
 
 start_text = "Lead Agency/County"
 start_text_page_number = find_page_number(pdf, start_text)
-end_text = "Page 1 of"
+end_text = "Fiscal Support Entity"
 end_text_page_number = find_page_number(pdf, end_text)
-fields = ['NAME', 'ADDRESS', 'CITY', 'STATE', 'ZIP CODE', 'NAME', 'EMAIL ADDRESS', 'NUMBER', 'NUMBER']
+fields = ['NAME', 'ADDRESS', 'CITY', 'STATE', 'ZIP CODE', 'CONTACT', 'EMAIL ADDRESS', 'NUMBER', 'FAX']
 json_data = single_person_information_extract(pdf, fields, start_text, end_text, start_text_page_number, end_text_page_number)
 print(json_data)
+
+start_text = "Fiscal Support Entity"
+start_text_page_number = find_page_number(pdf, start_text)
+end_text = "Page 1 of"
+end_text_page_number = find_page_number(pdf, end_text)
+fields = ['NAME', 'ADDRESS', 'CITY', 'STATE', 'ZIP CODE', 'CONTACT', 'EMAIL ADDRESS', 'PHONE', 'FAX']
+json_data = single_person_information_extract(pdf, fields, start_text, end_text, start_text_page_number, end_text_page_number)
+print(json_data)
+
+
+
+
+
 
 
 # def extract_value(pdf, field, target_text, eq_value):
