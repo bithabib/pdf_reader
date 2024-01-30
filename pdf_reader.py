@@ -140,6 +140,31 @@ fields = ['NAME', 'ADDRESS', 'CITY', 'STATE', 'ZIP CODE', 'CONTACT', 'EMAIL ADDR
 json_data = single_person_information_extract(pdf, fields, start_text, end_text, start_text_page_number, end_text_page_number)
 print(json_data)
 
+start_text = "Support Planner"
+start_text_page_number = find_page_number(pdf, start_text)
+end_text = "Employment Model"
+end_text_page_number = find_page_number(pdf, end_text)
+fields = ['NAME', 'ADDRESS', 'CITY', 'STATE', 'ZIP CODE', 'CONTACT', 'EMAIL ADDRESS', 'NUMBER', 'FAX']
+json_data = single_person_information_extract(pdf, fields, start_text, end_text, start_text_page_number, end_text_page_number)
+print(json_data)
+
+start_text = "Additional Contacts"
+start_text_page_number = find_page_number(pdf, start_text)
+end_text = "HOSPITAL"
+end_text_page_number = find_page_number(pdf, end_text)
+fields = ['DOCTOR', 'CLINIC', 'PHONE', 'ADDRESS', 'CITY', 'STATE', 'ZIP CODE']
+json_data = single_person_information_extract(pdf, fields, start_text, end_text, start_text_page_number, end_text_page_number)
+print(json_data)
+
+start_text = "HOSPITAL"
+start_text_page_number = find_page_number(pdf, start_text)
+end_text = "SCHOOL"
+end_text_page_number = find_page_number(pdf, end_text)
+fields = ['HOSPITAL', 'CLINIC', 'PHONE', 'ADDRESS', 'CITY', 'STATE', 'ZIP CODE']
+json_data = single_person_information_extract(pdf, fields, start_text, end_text, start_text_page_number, end_text_page_number)
+print(json_data)
+
+
 
 
 
